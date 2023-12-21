@@ -1,5 +1,8 @@
 class Solver:
 
+    alpha = None
+    betta = None
+
     def __init__(self, fi1, fi2, eps, type, sigm, ps1=None, ps2=None, f=None) -> None:
         self.fi1 = fi1
         self.fi2 = fi2
