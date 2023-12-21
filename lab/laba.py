@@ -1,9 +1,14 @@
 class Solver:
 
+    """! класс для решения диф. уровнений в частных производных методом прогонки"""
     alpha = []
     betta = []
 
     def __init__(self, fi1, fi2, eps, type, sigm, ps1=None, ps2=None, f=None) -> None:
+        """! инициализация класса
+
+        @param type тип граничного условия
+        """
         self.fi1 = fi1
         self.fi2 = fi2
         self.eps = eps
@@ -18,6 +23,14 @@ class Solver:
             raise ValueError('необходима функция ps2')
     
     def eps_n(self, u, dt=None, t=None, x=None):
+        """! Правая часть уравнения
+
+        @param u значение сетки в определенной точке
+        @param dt шаг по времени
+        @param t время 
+        @param x координата
+        @return tmp число
+        """
         tmp = u
         if self.f:
             try:
@@ -27,7 +40,10 @@ class Solver:
         return tmp
 
     def find_alpha_betta(self, Nx, h, t):
-        
+        """! поиск значений из левого граничного условия
+
+        @param Nx количество итераций по кординате х
+        """
         if self.type[0] == '1 рода':
             alpha = [0] * (Nx - 1)
             betta = [self.fi1(t) ] * (Nx - 1)
@@ -40,6 +56,12 @@ class Solver:
         return alpha, betta
 
     def solve(self, dt, L, Tmax, h,):
+        """! основная функции прогонки
+
+        @param L длина
+        @param Tmax время
+        @return  2-х мерный массив сетки решений
+        """
         Nx = int(L / h + 1)
         Nt = int(Tmax / dt + 1)
         U = [[0.0 for i in range(Nx)] for j in range(Nt)]
