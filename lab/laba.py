@@ -1,5 +1,4 @@
 class Solver:
-
     """! класс для решения диф. уровнений в частных производных методом прогонки"""
     alpha = []
     betta = []
@@ -17,12 +16,13 @@ class Solver:
         self.ps1 = ps1
         self.ps2 = ps2
         self.f = f
-        if type[0] == '3 рода' and ps1 is None:
+
+        if type[0] == 3 and ps1 is None:
             raise ValueError('необходима функция ps1')
-        if type[1] == '3 рода' and ps2 is None:
+        if type[1] == 3 and ps2 is None:
             raise ValueError('необходима функция ps2')
     
-    def eps_n(self, u, dt=None, t=None, x=None):
+    def _eps_n(self, u, dt=None, t=None, x=None):
         """! Правая часть уравнения
 
         @param u значение сетки в определенной точке
@@ -39,23 +39,23 @@ class Solver:
                 raise ValueError('Невозможно расчитать')
         return tmp
 
-    def find_alpha_betta(self, Nx, h, t):
+    def _find_alpha_betta(self, Nx, h, t):
         """! поиск значений из левого граничного условия
 
         @param Nx количество итераций по кординате х
         """
-        if self.type[0] == '1 рода':
+        if self.type[0] == 1:
             alpha = [0] * (Nx - 1)
             betta = [self.fi1(t) ] * (Nx - 1)
-        if self.type[0] == '2 рода':
+        if self.type[0] == 2:
             alpha = [1] * Nx
             betta = [ -h * self.fi1(t)] * (Nx - 1)
-        if self.type[0] == '3 рода':
+        if self.type[0] == 3:
             alpha = [1 / (1 + h * self.fi1(t))] * (Nx - 1)
             betta = [ -h * self.ps1(t) / (1 + h * self.fi1(t))] * (Nx - 1)
         return alpha, betta
 
-    def solve(self, dt, L, Tmax, h,):
+    def _solve(self, dt, L, Tmax, h,):
         """! основная функции прогонки
 
         @param L длина
@@ -75,16 +75,16 @@ class Solver:
         
         for n in range(0, Nt - 1):
             next_n = n + 1
-            alpha, betta = self.find_alpha_betta(Nx, h, next_n * dt)
+            alpha, betta = self._find_alpha_betta(Nx, h, next_n * dt)
             
             for j in range(1, Nx - 1):
-                betta[j] = (self.eps_n(U[n][j], dt, dt * n, h * j) - c * betta[j - 1]) / (b + c * alpha[j - 1])
+                betta[j] = (self._eps_n(U[n][j], dt, dt * n, h * j) - c * betta[j - 1]) / (b + c * alpha[j - 1])
                 alpha[j] = -a / (b + c * alpha[j - 1])
-            if self.type[1] == '1 рода':
+            if self.type[1] == 1:
                 U[next_n][-1] = self.fi2(dt * next_n)
-            if self.type[1] == '2 рода':
+            if self.type[1] == 2:
                 U[next_n][-1] = (h * self.fi2(dt * next_n) + betta[-1]) / (1 - alpha[-1])
-            if self.type[1] == '3 рода':
+            if self.type[1] == 3:
                 U[next_n][-1] = (h * self.ps2(dt * next_n) + betta[-1]) / (1 -alpha[-1] -h * self.fi2(dt * next_n))
             
             for j in range(Nx - 2, -1, -1):
@@ -102,18 +102,20 @@ Pr = 400
 d = 10.0 * 10 ** -3
 cs = 10.0
 B = D * (1 + 1/2 * (0.55 * pow(Re, 1/2) * pow(Pr, 1/3))) / d
-type = ['1 рода', '3 рода']
+types = [1, 3]
 
 def eps(x):
     return 200 + 50.0 * x
 def fi1(x):
     return 200.0
-
 def fi2(x):
     return -B / D
-
 def ps2(x):
     return  B * cs / D
 
-solver = Solver(fi1, fi2, eps, type, sigm, ps2=ps2)
-print(*solver.solve(1000, L, T, 0.01), sep='\n')
+
+
+
+if __name__ == "__main__":
+    solver = Solver(fi1, fi2, eps, types, sigm, ps2=ps2)
+    print(*solver._solve(1000, L, T, 0.01), sep='\n')

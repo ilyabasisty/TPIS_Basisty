@@ -30,7 +30,7 @@ def test_solver_U(solver):
               [200,181.369,162.729,144.073,125.394,106.689,87.9549,69.1937,50.409,31.6069,12.7948],
               [200,181.325,162.645,143.957,125.257,106.543,87.8154,69.0734,50.3194,31.5564,12.7883]]
 
-    assert is_equal_u(solver.solve(1000, L, T, 0.01), test_u)
+    assert is_equal_u(solver._solve(1000, L, T, 0.01), test_u)
 
 
 
@@ -38,7 +38,7 @@ def test_solver_alpha(solver:Solver):
     L = 0.1
     T  = 1000
     test_aplha = [0, 0.47619, 0.615836, 0.67378, 0.701154, 0.714875, 0.721957, 0.725666, 0.727625, 0.728664]
-    solver.solve(1000, L, T, 0.01)
+    solver._solve(1000, L, T, 0.01)
     assert is_equal(test_aplha, solver.alpha)
 
 
@@ -46,5 +46,5 @@ def test_solver_betta(solver:Solver):
     L = 0.1
     T  = 1000
     test_betta = [200, 104.786, 76.9091, 65.3965, 60.0163, 57.3804, 56.0819, 55.464, 55.2006, 55.1239]
-    solver.solve(1000, L, T, 0.01)
+    solver._solve(1000, L, T, 0.01)
     assert is_equal(test_betta, solver.betta)
