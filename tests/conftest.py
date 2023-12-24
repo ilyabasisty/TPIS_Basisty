@@ -14,15 +14,14 @@ def solver():
     d = 10.0 * 10 ** -3
     cs = 10.0
     B = D * (1 + 1/2 * (0.55 * pow(Re, 1/2) * pow(Pr, 1/3))) / d
-    type = ['1 рода', '3 рода']
+    type = [1, 3]
+    
     def eps(x):
         return 200 + 50.0 * x
     def fi1(x):
         return 200.0
-
     def fi2(x):
         return -B / D
-
     def ps2(x):
         return  B * cs / D
 
