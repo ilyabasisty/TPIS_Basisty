@@ -137,7 +137,7 @@ class FirstSolver:
     type = [1, 3]
 
     def _init_a_b_c(sigm, dt, h, k):
-        return -sigm * dt/h**2, 1 + 2 * sigm * dt/h**2 + k * dt, -sigm * dt/h**2
+        return [-sigm * dt/h**2, 1 + 2 * sigm * dt/h**2 + k * dt, -sigm * dt/h**2]
 
     def _eps_n(f, u, dt=None, h=None, n=None, j=None):
         x = h * j
@@ -157,7 +157,7 @@ class SecondSolver:
 
     def _init_a_b_c(self, dt, h, k):
         q = pow(math.pi, 1 / 2) * 0.5 * pow(dt, 1/2)
-        return - q * sigm / h ** 2, 1 + 2 * q * sigm / h ** 2,  - q * sigm / h ** 2
+        return [- q * sigm / h ** 2, 1 + 2 * q * sigm / h ** 2,  - q * sigm / h ** 2]
 
 
     def _eps_n(f, u, dt=None, h=None, n=None, j=None):
