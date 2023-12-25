@@ -11,7 +11,7 @@ class Solver:
     Nx = None
     Nt = None
 
-    def __init__(self, fi1, fi2, eps, sigm, ps1=None, ps2=None, f=None, k=0) -> None:
+    def __init__(self, fi1, fi2, eps, ps1=None, ps2=None, f=None, k=0) -> None:
         """! инициализация класса
 
         @param type тип граничного условия
@@ -22,7 +22,6 @@ class Solver:
         self.fi2 = fi2
         self.eps = eps
         self.type = self.solver_type.type
-        self.sigm = sigm
         self.ps1 = ps1
         self.ps2 = ps2
         self.f = f
@@ -41,7 +40,7 @@ class Solver:
 
 
     def _init_a_b_c(self, dt, h):
-        self.a, self.b, self.c = self.solver_type._init_a_b_c(self.sigm, dt, h, self.k)
+        self.a, self.b, self.c = self.solver_type._init_a_b_c(self.solver_type.sigm, dt, h, self.k)
     
     def _finde_alpha_betta(self, Nx, h, t):
         """! поиск значений из левого граничного условия
@@ -135,10 +134,10 @@ class Solver:
 class FirstSolver:
 
     type = [1, 3]
+    sigm = 10.0 ** -6
 
     def _init_a_b_c(sigm, dt, h, k):
-        sigma = 10.0 ** -6   
-        return -sigma * dt/h**2, 1 + 2 * sigma * dt/h**2 + k * dt, -sigma * dt/h**2
+        return -sigm * dt/h**2, 1 + 2 * sigm * dt/h**2 + k * dt, -sigm * dt/h**2
 
     def _eps_n(f, u, dt=None, h=None, n=None, j=None):
         x = h * j
@@ -155,6 +154,7 @@ class FirstSolver:
 class SecondSolver:
 
     type = [1, 1]
+    sigm = 4.5 / 100
 
     def _init_a_b_c(sigm, dt, h, k):
         q = pow(math.pi, 1 / 2) * 0.5 * pow(dt, 1/2)
@@ -176,7 +176,6 @@ class SecondSolver:
 
 if __name__ == "__main__":
     D = 10.0 ** -6    
-    sigm = D
     L = 0.1
     T  = 10000.0
     Re = 8
@@ -194,7 +193,7 @@ if __name__ == "__main__":
     def ps2(x):
         return  B * cs / D
 
-    solver = Solver(fi1, fi2, eps, sigm, ps2=ps2)
+    solver = Solver(fi1, fi2, eps, ps2=ps2)
     solver.set_solver_type(FirstSolver)
     U = solver._solve(1000, L, T, 0.01)
     # print(*U, sep='\n')
@@ -203,7 +202,6 @@ if __name__ == "__main__":
 
     k = 4.5
     D = k / 100
-    sigm = D
 
     def eps(t):
         return 0
@@ -216,7 +214,7 @@ if __name__ == "__main__":
 
     L = 1
     T = 1
-    solver = Solver(fi1, fi2, eps, sigm, f=f)
+    solver = Solver(fi1, fi2, eps, f=f)
     solver.set_solver_type(SecondSolver)
     U = solver._solve(0.01, L, T, 0.1)
     # print(*U, sep='\n')
