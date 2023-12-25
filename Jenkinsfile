@@ -1,5 +1,5 @@
 pipeline {
-    agent { node { label 'test Jenkins agent' } }
+    agent any
     stages {
         stage('build') {
             steps {
