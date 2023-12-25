@@ -137,7 +137,8 @@ class FirstSolver:
     type = [1, 3]
 
     def _init_a_b_c(sigm, dt, h, k):
-        return [-sigm * dt/h**2, 1 + 2 * sigm * dt/h**2 + k * dt, -sigm * dt/h**2]
+        sigma = 10.0 ** -6   
+        return -sigma * dt/h**2, 1 + 2 * sigma * dt/h**2 + k * dt, -sigma * dt/h**2
 
     def _eps_n(f, u, dt=None, h=None, n=None, j=None):
         x = h * j
@@ -155,9 +156,9 @@ class SecondSolver:
 
     type = [1, 1]
 
-    def _init_a_b_c(self, dt, h, k):
+    def _init_a_b_c(sigm, dt, h, k):
         q = pow(math.pi, 1 / 2) * 0.5 * pow(dt, 1/2)
-        return [- q * sigm / h ** 2, 1 + 2 * q * sigm / h ** 2,  - q * sigm / h ** 2]
+        return -q * sigm / h ** 2, 1 + 2 * q * sigm / h ** 2,  -q * sigm / h ** 2
 
 
     def _eps_n(f, u, dt=None, h=None, n=None, j=None):
@@ -196,7 +197,7 @@ if __name__ == "__main__":
     solver = Solver(fi1, fi2, eps, sigm, ps2=ps2)
     solver.set_solver_type(FirstSolver)
     U = solver._solve(1000, L, T, 0.01)
-    print(*U, sep='\n')
+    # print(*U, sep='\n')
 
     print('\n\n------------------------------------------------------------\n\n')
 
@@ -218,7 +219,7 @@ if __name__ == "__main__":
     solver = Solver(fi1, fi2, eps, sigm, f=f)
     solver.set_solver_type(SecondSolver)
     U = solver._solve(0.01, L, T, 0.1)
-    print(*U, sep='\n')
+    # print(*U, sep='\n')
 
 # if __name__ == "__main__":
 #     solver = Solver(fi1, fi2, eps, types, sigm, ps2=ps2)
