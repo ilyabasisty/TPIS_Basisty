@@ -15,7 +15,7 @@ def is_equal_u(list1, list2):
             return False
     return True
 
-def test_solver_U(solver):
+def test_solver_U(solver:Solver):
     L = 0.1
     T  = 10000
     test_u = [[200,200.5,201,201.5,202,202.5,203,203.5,204,204.5,205],

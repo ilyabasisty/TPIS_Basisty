@@ -11,22 +11,23 @@ class Solver:
     Nx = None
     Nt = None
 
-    solver_type = None
-
     def __init__(self, fi1, fi2, eps, sigm, ps1=None, ps2=None, f=None, k=0) -> None:
         """! инициализация класса
 
         @param type тип граничного условия
         """
+        self.solver_type = FirstSolver
+
         self.fi1 = fi1
         self.fi2 = fi2
         self.eps = eps
-        self.type = None
+        self.type = self.solver_type.type
         self.sigm = sigm
         self.ps1 = ps1
         self.ps2 = ps2
         self.f = f
         self.k = k
+
 
         if type[0] == 3 and ps1 is None:
             raise ValueError('необходима функция ps1')
