@@ -1,12 +1,12 @@
 pipeline {
     agent any
     stages {
-        stage('build') {
+        stage('Build') {
             steps {
-                sh 'pip install -r requirements.txt --break-system-packages'
+                sh 'pip install -r requirements.txt'
             }
         }
-        stage('test') {
+        stage('Test') {
             steps {
                 sh 'python3 -m pytest'
             }
