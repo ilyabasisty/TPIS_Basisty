@@ -25,6 +25,6 @@ def solver():
     def ps2(x):
         return  B * cs / D
 
-    solver = Solver(fi1, fi2, eps, type, sigm, ps2=ps2)
+    solver = Solver(fi1, fi2, eps, ps2=ps2)
 
     return solver
